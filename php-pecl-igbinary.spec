@@ -1,3 +1,5 @@
+# centos/sclo spec file for php-pecl-igbinary, from:
+#
 # remirepo spec file for php-pecl-igbinary
 # with SCL compatibility, from:
 #
@@ -10,78 +12,43 @@
 # Please, preserve the changelog entries
 #
 %if 0%{?scl:1}
-%global sub_prefix %{scl_prefix}
+%global sub_prefix sclo-%{scl_prefix}
+%if "%{scl}" == "rh-php56"
+%global sub_prefix sclo-php56-
+%endif
+%if "%{scl}" == "rh-php70"
+%global sub_prefix sclo-php70-
+%endif
 %scl_package       php-pecl-igbinary
 %endif
 
 %global extname    igbinary
-%global with_zts   0%{!?_without_zts:%{?__ztsphp:1}}
-%global gh_commit  6a2d5b7ea71489c4d7065dc7746d37cfa80d501c
-%global gh_short   %(c=%{gh_commit}; echo ${c:0:7})
-#global gh_date    20161018
-#global prever    -dev
-%if "%{php_version}" < "5.6"
-%global ini_name  %{extname}.ini
-%else
-%global ini_name  40-%{extname}.ini
-%endif
+%global ini_name   40-%{extname}.ini
 
 Summary:        Replacement for the standard PHP serializer
 Name:           %{?sub_prefix}php-pecl-igbinary
 Version:        2.0.1
-%if 0%{?gh_date}
-Release:        0.6.%{gh_date}git%{gh_short}%{?dist}%{!?nophptag:%(%{__php} -r 'echo ".".PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')}
-Source0:        https://github.com/%{extname}/%{extname}/archive/%{gh_commit}/%{extname}-%{version}-%{gh_short}.tar.gz
-%else
-Release:        1%{?dist}%{!?nophptag:%(%{__php} -r 'echo ".".PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')}
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{extname}-%{version}.tgz
-%endif
 License:        BSD
 Group:          System Environment/Libraries
 
 URL:            http://pecl.php.net/package/igbinary
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  %{?scl_prefix}php-pear
 BuildRequires:  %{?scl_prefix}php-devel >= 5.2.0
 BuildRequires:  %{?sub_prefix}php-pecl-apcu-devel
 
 Requires:       %{?scl_prefix}php(zend-abi) = %{php_zend_api}
 Requires:       %{?scl_prefix}php(api) = %{php_core_api}
-%{?_sclreq:Requires: %{?scl_prefix}runtime%{?_sclreq}%{?_isa}}
 
-Obsoletes:      %{?scl_prefix}php-%{extname}                <= 1.1.1
 Provides:       %{?scl_prefix}php-%{extname}                = %{version}
 Provides:       %{?scl_prefix}php-%{extname}%{?_isa}        = %{version}
 Provides:       %{?scl_prefix}php-pecl(%{extname})          = %{version}
 Provides:       %{?scl_prefix}php-pecl(%{extname})%{?_isa}  = %{version}
 %if "%{?scl_prefix}" != "%{?sub_prefix}"
-Provides:       %{?scl_prefix}php-pecl-%{pecl_name}         = %{version}-%{release}
-Provides:       %{?scl_prefix}php-pecl-%{pecl_name}%{?_isa} = %{version}-%{release}
-%endif
-
-%if "%{?vendor}" == "Remi Collet" && 0%{!?scl:1} && 0%{?rhel}
-# Other third party repo stuff
-Obsoletes:     php53-pecl-%{extname}
-Obsoletes:     php53u-pecl-%{extname}
-Obsoletes:     php54-pecl-%{extname}
-Obsoletes:     php54w-pecl-%{extname}
-%if "%{php_version}" > "5.5"
-Obsoletes:     php55u-pecl-%{extname}
-Obsoletes:     php55w-pecl-%{extname}
-%endif
-%if "%{php_version}" > "5.6"
-Obsoletes:     php56u-pecl-%{extname}
-Obsoletes:     php56w-pecl-%{extname}
-%endif
-%if "%{php_version}" > "7.0"
-Obsoletes:     php70u-pecl-%{extname}
-Obsoletes:     php70w-pecl-%{extname}
-%endif
-%if "%{php_version}" > "7.1"
-Obsoletes:     php71u-pecl-%{extname}
-Obsoletes:     php71w-pecl-%{extname}
-%endif
+Provides:       %{?scl_prefix}php-pecl-%{extname}           = %{version}-%{release}
+Provides:       %{?scl_prefix}php-pecl-%{extname}%{?_isa}   = %{version}-%{release}
 %endif
 
 %if 0%{?fedora} < 20 && 0%{?rhel} < 7
@@ -99,6 +66,8 @@ igbinary stores PHP data structures in a compact binary form.
 Savings are significant when using memcached or similar memory
 based storages for serialized data.
 
+Package built for PHP %(%{__php} -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')%{?scl: as Software Collection (%{scl} by %{?scl_vendor}%{!?scl_vendor:rh})}.
+
 
 %package devel
 Summary:       Igbinary developer files (header)
@@ -106,31 +75,21 @@ Group:         Development/Libraries
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      %{?scl_prefix}php-devel%{?_isa}
 
-Obsoletes:     %{?scl_prefix}php-%{extname}-devel         <= 1.1.1
 Provides:      %{?scl_prefix}php-%{extname}-devel         = %{version}-%{release}
 Provides:      %{?scl_prefix}php-%{extname}-devel%{?_isa} = %{version}-%{release}
+%if "%{?scl_prefix}" != "%{?sub_prefix}"
+Provides:      %{?scl_prefix}php-pecl-%{extname}-devel         = %{version}-%{release}
+Provides:      %{?scl_prefix}php-pecl-%{extname}-devel%{?_isa} = %{version}-%{release}
+%endif
 
 %description devel
 These are the files needed to compile programs using Igbinary
-
-Package built for PHP %(%{__php} -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')%{?scl: as Software Collection (%{scl} by %{?scl_vendor}%{!?scl_vendor:rh})}.
 
 
 %prep
 %setup -q -c
 
-%if 0%{?gh_date}
-mv igbinary-%{gh_commit} NTS
-%{__php} -r '
-  $pkg = simplexml_load_file("NTS/package.xml");
-  $pkg->date = substr("%{gh_date}",0,4)."-".substr("%{gh_date}",4,2)."-".substr("%{gh_date}",6,2);
-  $pkg->version->release = "%{version}dev";
-  $pkg->stability->release = "devel";
-  $pkg->asXML("package.xml");
-'
-%else
 mv %{extname}-%{version} NTS
-%endif
 
 %{?_licensedir:sed -e '/COPYING/s/role="doc"/role="src"/' -i package.xml}
 
@@ -144,10 +103,6 @@ if test "x${extver}" != "x%{version}%{?prever}"; then
    exit 1
 fi
 cd ..
-
-%if %{with_zts}
-cp -r NTS ZTS
-%endif
 
 cat <<EOF | tee %{ini_name}
 ; Enable %{extname} extension module
@@ -171,13 +126,6 @@ cd NTS
 %configure --with-php-config=%{_bindir}/php-config
 make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
-%configure --with-php-config=%{_bindir}/zts-php-config
-make %{?_smp_mflags}
-%endif
-
 
 %install
 rm -rf %{buildroot}
@@ -188,17 +136,10 @@ install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
 install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-# Install the ZTS stuff
-%if %{with_zts}
-make install -C ZTS INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
 # Test & Documentation
 cd NTS
 for i in $(grep 'role="test"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
-do [ -f $i       ] && install -Dpm 644 $i       %{buildroot}%{pecl_testdir}/%{extname}/$i
-   [ -f tests/$i ] && install -Dpm 644 tests/$i %{buildroot}%{pecl_testdir}/%{extname}/tests/$i
+do install -Dpm 644 $i %{buildroot}%{pecl_testdir}/%{extname}/$i
 done
 for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{extname}/$i
@@ -226,32 +167,12 @@ fi
 : upstream test suite
 cd NTS
 TEST_PHP_EXECUTABLE=%{_bindir}/php \
-TEST_PHP_ARGS="-n $MOD -d extension=$PWD/modules/%{extname}.so" \
+TEST_PHP_ARGS="-n $MOD -d extension=%{buildroot}%{php_extdir}/%{extname}.so" \
 NO_INTERACTION=1 \
 REPORT_EXIT_STATUS=1 \
 %{_bindir}/php -n run-tests.php --show-diff
 
-%if %{with_zts}
-: simple ZTS module load test, without APC, as optional
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{extname}.so \
-    --modules | grep %{extname}
 
-: upstream test suite
-cd ../ZTS
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n $MOD -d extension=$PWD/modules/%{extname}.so" \
-NO_INTERACTION=1 \
-REPORT_EXIT_STATUS=1 \
-%{__ztsphp} -n run-tests.php --show-diff
-%endif
-
-
-%clean
-rm -rf %{buildroot}
-
-
-%if 0%{?fedora} < 24
 # when pear installed alone, after us
 %triggerin -- %{?scl_prefix}php-pear
 if [ -x %{__pecl} ] ; then
@@ -268,35 +189,25 @@ fi
 if [ $1 -eq 0 -a -x %{__pecl} ] ; then
     %{pecl_uninstall} %{extname} >/dev/null || :
 fi
-%endif
 
 
 %files
-%defattr(-,root,root,-)
 %{?_licensedir:%license NTS/COPYING}
 %doc %{pecl_docdir}/%{extname}
 %config(noreplace) %{php_inidir}/%{ini_name}
-
 %{php_extdir}/%{extname}.so
 %{pecl_xmldir}/%{name}.xml
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{extname}.so
-%endif
-
 
 %files devel
-%defattr(-,root,root,-)
 %doc %{pecl_testdir}/%{extname}
 %{php_incldir}/ext/%{extname}
 
-%if %{with_zts}
-%{php_ztsincldir}/ext/%{extname}
-%endif
-
 
 %changelog
+* Thu Dec 29 2016 Remi Collet <remi@fedoraproject.org> - 2.0.1-1
+- cleanup for SCLo build
+
 * Tue Dec 20 2016 Remi Collet <remi@fedoraproject.org> - 2.0.1-1
 - Update to 2.0.1
 
