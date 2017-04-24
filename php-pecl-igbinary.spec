@@ -27,7 +27,7 @@
 
 Summary:        Replacement for the standard PHP serializer
 Name:           %{?sub_prefix}php-pecl-igbinary
-Version:        2.0.3
+Version:        2.0.4
 Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{extname}-%{version}.tgz
 License:        BSD
@@ -205,6 +205,9 @@ fi
 
 
 %changelog
+* Mon Apr 24 2017 Remi Collet <remi@remirepo.net> - 2.0.4-1
+- update to 2.0.4
+
 * Thu Apr 13 2017 Remi Collet <remi@fedoraproject.org> - 2.0.3-1
 - update to 2.0.3
 - tarball generated from github (not yet available on pecl)
