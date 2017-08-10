@@ -19,6 +19,9 @@
 %if "%{scl}" == "rh-php70"
 %global sub_prefix sclo-php70-
 %endif
+%if "%{scl}" == "rh-php71"
+%global sub_prefix sclo-php71-
+%endif
 %scl_package       php-pecl-igbinary
 %endif
 
@@ -28,7 +31,7 @@
 Summary:        Replacement for the standard PHP serializer
 Name:           %{?sub_prefix}php-pecl-igbinary
 Version:        2.0.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Source0:        http://pecl.php.net/get/%{extname}-%{version}.tgz
 License:        BSD
 Group:          System Environment/Libraries
@@ -37,7 +40,7 @@ URL:            http://pecl.php.net/package/igbinary
 
 BuildRequires:  %{?scl_prefix}php-pear
 BuildRequires:  %{?scl_prefix}php-devel >= 5.2.0
-BuildRequires:  %{?sub_prefix}php-pecl-apcu-devel
+BuildRequires:  %{?scl_prefix}php-pecl-apcu-devel
 
 Requires:       %{?scl_prefix}php(zend-abi) = %{php_zend_api}
 Requires:       %{?scl_prefix}php(api) = %{php_core_api}
@@ -205,6 +208,9 @@ fi
 
 
 %changelog
+* Thu Aug 10 2017 Remi Collet <remi@remirepo.net> - 2.0.4-2
+- change for sclo-php71
+
 * Mon Apr 24 2017 Remi Collet <remi@remirepo.net> - 2.0.4-1
 - update to 2.0.4
 
