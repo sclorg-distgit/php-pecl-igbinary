@@ -30,8 +30,8 @@
 
 Summary:        Replacement for the standard PHP serializer
 Name:           %{?sub_prefix}php-pecl-igbinary
-Version:        2.0.4
-Release:        2%{?dist}
+Version:        2.0.5
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{extname}-%{version}.tgz
 License:        BSD
 Group:          System Environment/Libraries
@@ -208,6 +208,9 @@ fi
 
 
 %changelog
+* Mon Nov  6 2017 Remi Collet <remi@remirepo.net> - 2.0.5-1
+- update to 2.0.5
+
 * Thu Aug 10 2017 Remi Collet <remi@remirepo.net> - 2.0.4-2
 - change for sclo-php71
 
