@@ -13,9 +13,6 @@
 #
 %if 0%{?scl:1}
 %global sub_prefix sclo-%{scl_prefix}
-%if "%{scl}" == "rh-php56"
-%global sub_prefix sclo-php56-
-%endif
 %if "%{scl}" == "rh-php70"
 %global sub_prefix sclo-php70-
 %endif
@@ -30,7 +27,7 @@
 
 Summary:        Replacement for the standard PHP serializer
 Name:           %{?sub_prefix}php-pecl-igbinary
-Version:        2.0.6
+Version:        2.0.7
 Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{extname}-%{version}.tgz
 License:        BSD
@@ -208,6 +205,9 @@ fi
 
 
 %changelog
+* Wed Jun 27 2018 Remi Collet <remi@remirepo.net> - 2.0.7-1
+- update to 2.0.7
+
 * Mon May 14 2018 Remi Collet <remi@remirepo.net> - 2.0.6-1
 - update to 2.0.6
 
