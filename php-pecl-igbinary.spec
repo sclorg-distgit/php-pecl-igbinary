@@ -19,6 +19,9 @@
 %if "%{scl}" == "rh-php71"
 %global sub_prefix sclo-php71-
 %endif
+%if "%{scl}" == "rh-php72"
+%global sub_prefix sclo-php72-
+%endif
 %scl_package       php-pecl-igbinary
 %endif
 
@@ -27,7 +30,7 @@
 
 Summary:        Replacement for the standard PHP serializer
 Name:           %{?sub_prefix}php-pecl-igbinary
-Version:        2.0.7
+Version:        2.0.8
 Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{extname}-%{version}.tgz
 License:        BSD
@@ -38,6 +41,7 @@ URL:            http://pecl.php.net/package/igbinary
 BuildRequires:  %{?scl_prefix}php-pear
 BuildRequires:  %{?scl_prefix}php-devel >= 5.2.0
 BuildRequires:  %{?scl_prefix}php-pecl-apcu-devel
+BuildRequires:  %{?scl_prefix}php-json
 
 Requires:       %{?scl_prefix}php(zend-abi) = %{php_zend_api}
 Requires:       %{?scl_prefix}php(api) = %{php_core_api}
@@ -164,6 +168,11 @@ fi
     --define extension=%{buildroot}%{php_extdir}/%{extname}.so \
     --modules | grep %{extname}
 
+# Json used in tests
+if [ -f %{php_extdir}/json.so ]; then
+  MOD="$MOD -d extension=json.so"
+fi
+
 : upstream test suite
 cd NTS
 TEST_PHP_EXECUTABLE=%{_bindir}/php \
@@ -205,6 +214,9 @@ fi
 
 
 %changelog
+* Mon Oct 22 2018 Remi Collet <remi@remirepo.net> - 2.0.8-1
+- update to 2.0.8
+
 * Wed Jun 27 2018 Remi Collet <remi@remirepo.net> - 2.0.7-1
 - update to 2.0.7
 
