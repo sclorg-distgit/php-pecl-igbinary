@@ -5,7 +5,7 @@
 #
 # Fedora spec file for php-pecl-igbinary
 #
-# Copyright (c) 2010-2018 Remi Collet
+# Copyright (c) 2010-2019 Remi Collet
 # License: CC-BY-SA
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
@@ -22,6 +22,9 @@
 %if "%{scl}" == "rh-php72"
 %global sub_prefix sclo-php72-
 %endif
+%if "%{scl}" == "rh-php73"
+%global sub_prefix sclo-php73-
+%endif
 %scl_package       php-pecl-igbinary
 %endif
 
@@ -31,7 +34,7 @@
 Summary:        Replacement for the standard PHP serializer
 Name:           %{?sub_prefix}php-pecl-igbinary
 Version:        2.0.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 Source0:        http://pecl.php.net/get/%{extname}-%{version}.tgz
 License:        BSD
 Group:          System Environment/Libraries
@@ -214,6 +217,9 @@ fi
 
 
 %changelog
+* Fri Oct 25 2019 Remi Collet <remi@remirepo.net> - 2.0.8-2
+- build for sclo-php72
+
 * Mon Oct 22 2018 Remi Collet <remi@remirepo.net> - 2.0.8-1
 - update to 2.0.8
 
